@@ -56,6 +56,17 @@ public class ArthasConfiguration {
         if (arthasConfigMap.get("appName") == null && appName != null) {
             arthasConfigMap.put("appName", appName);
         }
+        //
+        if (!arthasConfigMap.containsKey("httpPort") && arthasProperties.getHttpPort() != 0) {
+            arthasConfigMap.put("httpPort", String.valueOf(arthasProperties.getHttpPort()));
+        }
+        if (!arthasConfigMap.containsKey("telnetPort") && arthasProperties.getTelnetPort() != 0) {
+            arthasConfigMap.put("telnetPort", String.valueOf(arthasProperties.getTelnetPort()));
+        }
+        if (!arthasConfigMap.containsKey("ip") && arthasProperties.getIp() != null) {
+            arthasConfigMap.put("ip",arthasProperties.getIp());
+        }
+        //
 
 		// 给配置全加上前缀
 		Map<String, String> mapWithPrefix = new HashMap<String, String>(arthasConfigMap.size());
