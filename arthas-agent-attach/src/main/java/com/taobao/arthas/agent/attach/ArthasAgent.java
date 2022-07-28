@@ -84,12 +84,16 @@ public class ArthasAgent {
         } catch (Throwable e) {
             // ignore
         }
-
         try {
             if (instrumentation == null) {
                 instrumentation = ByteBuddyAgent.install();
             }
+        } catch (Throwable e) {
+            // this is only used for KE, which ehcache has already loaded the "libattach.so"
+            instrumentation = ByteBuddyAgent.install(new ByteBuddyAgent.AttachmentProvider.Compound(new EhCacheAttachmentProvider(), ByteBuddyAgent.AttachmentProvider.DEFAULT));
+        }
 
+        try {
             // 检查 arthasHome
             if (arthasHome == null || arthasHome.trim().isEmpty()) {
                 // 解压出 arthasHome
