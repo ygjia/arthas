@@ -11,7 +11,7 @@
 #    date : 2022-06-13
 
 # current arthas script version
-ARTHAS_SCRIPT_VERSION=3.6.3
+ARTHAS_SCRIPT_VERSION=3.6.3-kyarthas-r1
 
 # SYNOPSIS
 #   rreadlink <fileOrDirPath>
@@ -453,7 +453,7 @@ EXAMPLES:
   ./as.sh --stat-url 'http://192.168.10.11:8080/api/stat'
   ./as.sh -c 'sysprop; thread' <pid>
   ./as.sh -f batch.as <pid>
-  ./as.sh --use-version 3.6.3
+  ./as.sh --use-version 3.6.3-kyarthas-r1
   ./as.sh --session-timeout 3600
   ./as.sh --attach-only
   ./as.sh --disabled-commands stop,dump
