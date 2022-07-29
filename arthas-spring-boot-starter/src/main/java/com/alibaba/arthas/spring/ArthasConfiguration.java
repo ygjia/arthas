@@ -18,7 +18,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import com.taobao.arthas.agent.attach.ArthasAgent;
 
 /**
- * 
+ *
  * @author hengyunabc 2020-06-22
  *
  */
@@ -43,12 +43,39 @@ public class ArthasConfiguration {
 		return new HashMap<String, String>();
 	}
 
+	/**
+	 * KE with arthas-spring-boot-starter can not get params to `arthasConfigMap`,
+	 * reinit `arthasConfigMap` before arthasAgent.init();
+	 * see KE-37696
+	 * @param arthasConfigMap
+	 */
+
+    public void reinitArthasConfigMap(ArthasProperties arthasProperties, Map<String, String> arthasConfigMap) {
+        if (!arthasConfigMap.containsKey("httpPort") && arthasProperties.getHttpPort() != 0) {
+            arthasConfigMap.put("httpPort", String.valueOf(arthasProperties.getHttpPort()));
+        }
+        if (!arthasConfigMap.containsKey("telnetPort") && arthasProperties.getTelnetPort() != 0) {
+            arthasConfigMap.put("telnetPort", String.valueOf(arthasProperties.getTelnetPort()));
+        }
+        if (!arthasConfigMap.containsKey("ip") && arthasProperties.getIp() != null) {
+            arthasConfigMap.put("ip", arthasProperties.getIp());
+        }
+		if (!arthasConfigMap.containsKey("tunnelServer") && arthasProperties.getTunnelServer() != null) {
+			arthasConfigMap.put("tunnelServer", arthasProperties.getTunnelServer());
+		}
+		if (!arthasConfigMap.containsKey("appName") && arthasProperties.getAppName() != null) {
+			arthasConfigMap.put("appName", arthasProperties.getAppName());
+		}
+    }
+
 	@ConditionalOnMissingBean
 	@Bean
 	public ArthasAgent arthasAgent(@Autowired @Qualifier("arthasConfigMap") Map<String, String> arthasConfigMap,
 			@Autowired ArthasProperties arthasProperties) throws Throwable {
         arthasConfigMap = StringUtils.removeDashKey(arthasConfigMap);
         ArthasProperties.updateArthasConfigMapDefaultValue(arthasConfigMap);
+		reinitArthasConfigMap(arthasProperties, arthasConfigMap);
+
         /**
          * @see org.springframework.boot.context.ContextIdApplicationContextInitializer#getApplicationId(ConfigurableEnvironment)
          */
