@@ -18,7 +18,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import com.taobao.arthas.agent.attach.ArthasAgent;
 
 /**
- * 
+ *
  * @author hengyunabc 2020-06-22
  *
  */
@@ -43,6 +43,25 @@ public class ArthasConfiguration {
 		return new HashMap<String, String>();
 	}
 
+	/**
+	 * KE with arthas-spring-boot-starter can not get params to `arthasConfigMap`,
+	 * reinit `arthasConfigMap` before arthasAgent.init();
+	 * see KE-37696
+	 * @param arthasConfigMap
+	 */
+
+    public void reinitArthasConfigMap(ArthasProperties arthasProperties, Map<String, String> arthasConfigMap) {
+        if (!arthasConfigMap.containsKey("httpPort") && arthasProperties.getHttpPort() != 0) {
+            arthasConfigMap.put("httpPort", String.valueOf(arthasProperties.getHttpPort()));
+        }
+        if (!arthasConfigMap.containsKey("telnetPort") && arthasProperties.getTelnetPort() != 0) {
+            arthasConfigMap.put("telnetPort", String.valueOf(arthasProperties.getTelnetPort()));
+        }
+        if (!arthasConfigMap.containsKey("ip") && arthasProperties.getIp() != null) {
+            arthasConfigMap.put("ip", arthasProperties.getIp());
+        }
+    }
+
 	@ConditionalOnMissingBean
 	@Bean
 	public ArthasAgent arthasAgent(@Autowired @Qualifier("arthasConfigMap") Map<String, String> arthasConfigMap,
@@ -56,6 +75,8 @@ public class ArthasConfiguration {
         if (arthasConfigMap.get("appName") == null && appName != null) {
             arthasConfigMap.put("appName", appName);
         }
+
+        reinitArthasConfigMap(arthasProperties, arthasConfigMap);
 
 		// 给配置全加上前缀
 		Map<String, String> mapWithPrefix = new HashMap<String, String>(arthasConfigMap.size());
