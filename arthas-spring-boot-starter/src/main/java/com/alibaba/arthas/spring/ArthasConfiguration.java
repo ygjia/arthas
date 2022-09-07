@@ -60,6 +60,12 @@ public class ArthasConfiguration {
         if (!arthasConfigMap.containsKey("ip") && arthasProperties.getIp() != null) {
             arthasConfigMap.put("ip", arthasProperties.getIp());
         }
+		if (!arthasConfigMap.containsKey("tunnelServer") && arthasProperties.getTunnelServer() != null) {
+			arthasConfigMap.put("tunnelServer", arthasProperties.getTunnelServer());
+		}
+		if (!arthasConfigMap.containsKey("appName") && arthasProperties.getAppName() != null) {
+			arthasConfigMap.put("appName", arthasProperties.getAppName());
+		}
     }
 
 	@ConditionalOnMissingBean
