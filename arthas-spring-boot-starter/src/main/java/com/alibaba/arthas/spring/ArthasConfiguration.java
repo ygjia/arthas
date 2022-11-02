@@ -50,23 +50,23 @@ public class ArthasConfiguration {
 	 * @param arthasConfigMap
 	 */
 
-    public void reinitArthasConfigMap(ArthasProperties arthasProperties, Map<String, String> arthasConfigMap) {
-        if (!arthasConfigMap.containsKey("httpPort") && arthasProperties.getHttpPort() != 0) {
-            arthasConfigMap.put("httpPort", String.valueOf(arthasProperties.getHttpPort()));
-        }
-        if (!arthasConfigMap.containsKey("telnetPort") && arthasProperties.getTelnetPort() != 0) {
-            arthasConfigMap.put("telnetPort", String.valueOf(arthasProperties.getTelnetPort()));
-        }
-        if (!arthasConfigMap.containsKey("ip") && arthasProperties.getIp() != null) {
-            arthasConfigMap.put("ip", arthasProperties.getIp());
-        }
+	public void reinitArthasConfigMap(ArthasProperties arthasProperties, Map<String, String> arthasConfigMap) {
+		if (!arthasConfigMap.containsKey("httpPort") && arthasProperties.getHttpPort() != 0) {
+			arthasConfigMap.put("httpPort", String.valueOf(arthasProperties.getHttpPort()));
+		}
+		if (!arthasConfigMap.containsKey("telnetPort") && arthasProperties.getTelnetPort() != 0) {
+			arthasConfigMap.put("telnetPort", String.valueOf(arthasProperties.getTelnetPort()));
+		}
+		if (!arthasConfigMap.containsKey("ip") && arthasProperties.getIp() != null) {
+			arthasConfigMap.put("ip", arthasProperties.getIp());
+		}
 		if (!arthasConfigMap.containsKey("tunnelServer") && arthasProperties.getTunnelServer() != null) {
 			arthasConfigMap.put("tunnelServer", arthasProperties.getTunnelServer());
 		}
 		if (!arthasConfigMap.containsKey("appName") && arthasProperties.getAppName() != null) {
 			arthasConfigMap.put("appName", arthasProperties.getAppName());
 		}
-    }
+	}
 
 	@ConditionalOnMissingBean
 	@Bean
