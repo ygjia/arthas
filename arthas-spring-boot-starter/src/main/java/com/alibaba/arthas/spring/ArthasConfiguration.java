@@ -60,6 +60,12 @@ public class ArthasConfiguration {
         if (!arthasConfigMap.containsKey("ip") && arthasProperties.getIp() != null) {
             arthasConfigMap.put("ip", arthasProperties.getIp());
         }
+		if (!arthasConfigMap.containsKey("tunnelServer") && arthasProperties.getTunnelServer() != null) {
+			arthasConfigMap.put("tunnelServer", arthasProperties.getTunnelServer());
+		}
+		if (!arthasConfigMap.containsKey("appName") && arthasProperties.getAppName() != null) {
+			arthasConfigMap.put("appName", arthasProperties.getAppName());
+		}
     }
 
 	@ConditionalOnMissingBean
@@ -68,6 +74,8 @@ public class ArthasConfiguration {
 			@Autowired ArthasProperties arthasProperties) throws Throwable {
         arthasConfigMap = StringUtils.removeDashKey(arthasConfigMap);
         ArthasProperties.updateArthasConfigMapDefaultValue(arthasConfigMap);
+		reinitArthasConfigMap(arthasProperties, arthasConfigMap);
+
         /**
          * @see org.springframework.boot.context.ContextIdApplicationContextInitializer#getApplicationId(ConfigurableEnvironment)
          */
@@ -75,8 +83,6 @@ public class ArthasConfiguration {
         if (arthasConfigMap.get("appName") == null && appName != null) {
             arthasConfigMap.put("appName", appName);
         }
-
-        reinitArthasConfigMap(arthasProperties, arthasConfigMap);
 
 		// 给配置全加上前缀
 		Map<String, String> mapWithPrefix = new HashMap<String, String>(arthasConfigMap.size());
