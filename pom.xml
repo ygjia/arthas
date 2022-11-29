@@ -2,11 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
-    </parent>
+    <!-- this is used for offical arthas release, kyarthas shouldn't use this-->
+    <!--    <parent>-->
+    <!--        <groupId>org.sonatype.oss</groupId>-->
+    <!--        <artifactId>oss-parent</artifactId>-->
+    <!--        <version>9</version>-->
+    <!--    </parent>-->
 
     <licenses>
         <license>
@@ -226,7 +227,20 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
+    <!-- distributionManagement is added for kyarthas release-->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>dev</id>
+            <name>Dev Snapshots Repository</name>
+            <url>https://repo-ofs.kyligence.com/repository/maven-snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>dev</id>
+            <name>Dev Releases Repository</name>
+            <url>https://repo-ofs.kyligence.com/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
     <profiles>
         <profile>
             <!-- ci test -->
