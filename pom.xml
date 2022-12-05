@@ -73,7 +73,7 @@
         <module>arthas-spring-boot-starter</module>
         <module>tunnel-server</module>
         <module>testcase</module>
-        <module>site</module>
+<!--        <module>site</module>-->
         <module>packaging</module>
     </modules>
 
