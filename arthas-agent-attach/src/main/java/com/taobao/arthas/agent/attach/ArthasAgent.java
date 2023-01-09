@@ -2,11 +2,13 @@ package com.taobao.arthas.agent.attach;
 
 import java.arthas.SpyAPI;
 import java.io.File;
+import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.zeroturnaround.zip.ZipUtil;
 
 import net.bytebuddy.agent.ByteBuddyAgent;
@@ -138,14 +140,23 @@ public class ArthasAgent {
     }
 
     private static File createTempDir() {
-        File baseDir = new File(System.getProperty("java.io.tmpdir"));
-        String baseName = "arthas-" + System.currentTimeMillis() + "-";
+        File baseDir = new File(System.getProperty("user.dir"), "arthas-tmp");
+        if(!baseDir.exists()){
+            baseDir.mkdir();
+        }
 
-        for (int counter = 0; counter < TEMP_DIR_ATTEMPTS; counter++) {
-            File tempDir = new File(baseDir, baseName + counter);
-            if (tempDir.mkdir()) {
-                return tempDir;
+        String baseName = "arthas-package";
+        File tempDir = new File(baseDir, baseName);
+        if (tempDir.exists()) {
+            try {
+                FileUtils.deleteDirectory(tempDir);
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to delete old arthas-package.");
             }
+        }
+
+        if (tempDir.mkdir()) {
+            return tempDir;
         }
         throw new IllegalStateException("Failed to create directory within " + TEMP_DIR_ATTEMPTS + " attempts (tried "
                 + baseName + "0 to " + baseName + (TEMP_DIR_ATTEMPTS - 1) + ')');

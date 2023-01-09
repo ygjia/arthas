@@ -37,6 +37,8 @@ import arthas.VmTool;
 import one.profiler.AsyncProfiler;
 import one.profiler.Counter;
 
+import static com.taobao.arthas.common.ArthasConstants.ARTHAS_TMP;
+
 /**
  * 
  * @author hengyunabc 2019-10-31
@@ -250,7 +252,9 @@ public class ProfilerCommand extends AnnotatedCommand {
             FileOutputStream tmpLibOutputStream = null;
             FileInputStream libInputStream = null;
             try {
-                File tmpLibFile = File.createTempFile(VmTool.JNI_LIBRARY_NAME, null);
+                String arthasTmpDir = System.getProperty("user.dir") + File.separator + ARTHAS_TMP;
+                File tmpLibFile = new File(arthasTmpDir, VmTool.JNI_LIBRARY_NAME + "Profiler.tmp");
+                tmpLibFile.deleteOnExit();
                 tmpLibOutputStream = new FileOutputStream(tmpLibFile);
                 libInputStream = new FileInputStream(libPath);
 

@@ -3,6 +3,9 @@
 #### 发版
 ./mvnw clean deploy -DskipTests -P dev -P full
 
+### 3.6.7-kyarthas-r3
+修复 `/tmp` 目录有 noexec 属性时，arthas 无法打火焰图，无法使用`vmtool`命令的问题(KE-39770)
+
 ### 3.6.7-kyarthas-r2
 解决安全漏洞问题(KE-40431)
 

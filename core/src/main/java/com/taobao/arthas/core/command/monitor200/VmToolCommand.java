@@ -38,6 +38,8 @@ import com.taobao.middleware.cli.annotations.Summary;
 
 import arthas.VmTool;
 
+import static com.taobao.arthas.common.ArthasConstants.ARTHAS_TMP;
+
 /**
  * 
  * @author hengyunabc 2021-04-27
@@ -263,7 +265,9 @@ public class VmToolCommand extends AnnotatedCommand {
             FileOutputStream tmpLibOutputStream = null;
             FileInputStream libInputStream = null;
             try {
-                File tmpLibFile = File.createTempFile(VmTool.JNI_LIBRARY_NAME, null);
+                String arthasTmpDir = System.getProperty("user.dir") + File.separator + ARTHAS_TMP;
+                File tmpLibFile = new File(arthasTmpDir, VmTool.JNI_LIBRARY_NAME + "VmTool.tmp");
+                tmpLibFile.deleteOnExit();
                 tmpLibOutputStream = new FileOutputStream(tmpLibFile);
                 libInputStream = new FileInputStream(libPath);
 
